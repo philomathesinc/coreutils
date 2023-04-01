@@ -11,4 +11,6 @@ $ wc --files0-from=filelist.txt
   2  12  71 one.txt
   5  24 143 two.txt
   7  36 214 total
+$ touch testdata/no-read.txt
+$ chmod 333 testdata/no-read.txt
 ```
