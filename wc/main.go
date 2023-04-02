@@ -13,9 +13,7 @@ var (
 )
 
 func main() {
-
-	filename := os.Args[1]
-	fmt.Println(os.Args)
+	filename := os.Args[2]
 	flag.BoolVar(&lineCountFlag, "l", false, "Display the number of lines")
 	flag.Parse()
 	if lineCountFlag {
@@ -24,7 +22,7 @@ func main() {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-		fmt.Println(lineCount)
+		fmt.Println(lineCount, filename)
 	}
 
 }
@@ -41,8 +39,5 @@ func CountLines(filename string) (int, error) {
 		return 0, err
 	}
 
-	dataString := string(data)
-	lines := strings.Split(dataString, "\n")
-
-	return len(lines), nil
+	return strings.Count(string(data), "\n"), nil
 }
