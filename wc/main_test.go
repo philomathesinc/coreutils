@@ -28,8 +28,14 @@ func TestCountLines(t *testing.T) {
 			false,
 		},
 		{
-			"count lines invalid",
+			"count lines file does not exist",
 			args{"testdata/three.txt"},
+			0,
+			true,
+		},
+		{
+			"count lines read error",
+			args{"testdata/no-read.txt"},
 			0,
 			true,
 		},
