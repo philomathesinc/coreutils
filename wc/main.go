@@ -10,7 +10,7 @@ import (
 func main() {
 	filename := os.Args[1]
 
-	lineCount, err := countLines(filename)
+	lineCount, err := CountLines(filename)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -19,7 +19,7 @@ func main() {
 	fmt.Println(lineCount)
 }
 
-func countLines(filename string) (int, error) {
+func CountLines(filename string) (int, error) {
 	file, err := os.Open(filename)
 	if err != nil {
 		return 0, err
