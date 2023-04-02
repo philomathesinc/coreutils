@@ -2,6 +2,7 @@ package main_test
 
 import (
 	"testing"
+
 	. "github.com/philomathesinc/coreutils/wc"
 )
 

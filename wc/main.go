@@ -1,22 +1,32 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io"
 	"os"
 	"strings"
 )
 
-func main() {
-	filename := os.Args[1]
+var (
+	lineCountFlag bool
+)
 
-	lineCount, err := CountLines(filename)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+func main() {
+
+	filename := os.Args[1]
+	fmt.Println(os.Args)
+	flag.BoolVar(&lineCountFlag, "l", false, "Display the number of lines")
+	flag.Parse()
+	if lineCountFlag {
+		lineCount, err := CountLines(filename)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		fmt.Println(lineCount)
 	}
 
-	fmt.Println(lineCount)
 }
 
 func CountLines(filename string) (int, error) {
