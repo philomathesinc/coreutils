@@ -4,6 +4,13 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
+)
+
+var (
+	lineCount int
+	charCount int
+	wordCount int
 )
 
 func main() {
@@ -24,8 +31,14 @@ func main() {
 		if err != nil {
 			erroredExit(err)
 		}
-		fmt.Println(string(bytes[:n]))
+		content := string(bytes[:n])
+
+		lineCount += strings.Count(content, "\n")
+		charCount += len(content)
+		wordCount += len(strings.Split(content, " ")) + lineCount
 	}
+
+	fmt.Println(lineCount, wordCount, charCount, fileName)
 }
 
 func cleanExit() {
