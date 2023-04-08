@@ -9,13 +9,15 @@ import (
 )
 
 var (
-	lineCountFlag bool
-	wordCountFlag bool
+	lineCountFlag      bool
+	wordCountFlag      bool
+	characterCountFlag bool
 )
 
 func main() {
 	flag.BoolVar(&lineCountFlag, "l", false, "Display the number of lines")
 	flag.BoolVar(&wordCountFlag, "w", false, "Display the number of words")
+	flag.BoolVar(&characterCountFlag, "c", false, "Display the number of characters")
 	flag.Parse()
 	filename := os.Args[2]
 
@@ -29,12 +31,21 @@ func main() {
 	}
 
 	if wordCountFlag {
-		lineCount, err := CountWords(filename)
+		wordCount, err := CountWords(filename)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-		fmt.Println(lineCount, filename)
+		fmt.Println(wordCount, filename)
+	}
+
+	if characterCountFlag {
+		characterCount, err := CountCharacters(filename)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		fmt.Println(characterCount, filename)
 	}
 }
 
@@ -66,4 +77,19 @@ func CountWords(filename string) (int, error) {
 	}
 
 	return len(strings.Fields(string(data))), nil
+}
+
+func CountCharacters(filename string) (int, error) {
+	file, err := os.Open(filename)
+	if err != nil {
+		return 0, err
+	}
+	defer file.Close()
+
+	data, err := io.ReadAll(file)
+	if err != nil {
+		return 0, err
+	}
+
+	return strings.Count(string(data), "") - 1, nil
 }
