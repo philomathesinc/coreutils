@@ -65,5 +65,5 @@ func CountWords(filename string) (int, error) {
 		return 0, err
 	}
 
-	return strings.Count(string(data), " "), nil
+	return len(strings.Fields(string(data))), nil
 }
