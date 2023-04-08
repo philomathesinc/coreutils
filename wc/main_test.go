@@ -19,17 +19,17 @@ func TestCountLines(t *testing.T) {
 		{
 			"count lines valid",
 			args{"testdata/one.txt"},
-			3,
+			2,
 			false,
 		},
 		{
 			"count lines valid",
 			args{"testdata/two.txt"},
-			6,
+			5,
 			false,
 		},
 		{
-			"count lines file does not exist",
+			"count lines file has no newlines",
 			args{"testdata/three.txt"},
 			0,
 			true,

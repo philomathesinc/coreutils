@@ -19,6 +19,28 @@ func main() {
 	flag.BoolVar(&wordCountFlag, "w", false, "Display the number of words")
 	flag.BoolVar(&characterCountFlag, "c", false, "Display the number of characters")
 	flag.Parse()
+
+	if !lineCountFlag && !wordCountFlag && !characterCountFlag {
+		filename := os.Args[1]
+		lineCount, err := CountLines(filename)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		wordCount, err := CountWords(filename)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		characterCount, err := CountCharacters(filename)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		fmt.Printf("%d %d %d %s\n", lineCount, wordCount, characterCount, filename)
+		return
+	}
+
 	filename := os.Args[2]
 
 	if lineCountFlag {
