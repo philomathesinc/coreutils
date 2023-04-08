@@ -41,34 +41,44 @@ func main() {
 		return
 	}
 
-	filename := os.Args[2]
-
-	if lineCountFlag {
-		lineCount, err := CountLines(filename)
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-		fmt.Println(lineCount, filename)
+	if flag.NArg() == 0 {
+		os.Exit(1)
 	}
+	filename := flag.Arg(0)
 
-	if wordCountFlag {
-		wordCount, err := CountWords(filename)
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+	outputFormat := ""
+	for i := 0; i < flag.NFlag(); i++ {
+		if lineCountFlag {
+			lineCount, err := CountLines(filename)
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
+			outputFormat += fmt.Sprintf(" %d", lineCount)
+			lineCountFlag = false
 		}
-		fmt.Println(wordCount, filename)
-	}
 
-	if characterCountFlag {
-		characterCount, err := CountCharacters(filename)
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+		if wordCountFlag {
+			wordCount, err := CountWords(filename)
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
+			outputFormat += fmt.Sprintf(" %d", wordCount)
+			wordCountFlag = false
 		}
-		fmt.Println(characterCount, filename)
+
+		if characterCountFlag {
+			characterCount, err := CountCharacters(filename)
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
+			outputFormat += fmt.Sprintf(" %d", characterCount)
+			characterCountFlag = false
+		}
 	}
+	fmt.Printf("%s %s\n", outputFormat, filename)
 }
 
 func CountLines(filename string) (int, error) {
