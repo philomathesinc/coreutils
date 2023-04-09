@@ -11,20 +11,23 @@ var (
 	lineCount int
 	charCount int
 	wordCount int
-	output    string
+	wordEnd   uint8
 )
 
 func main() {
 	allArgs := os.Args[1:]
 
 	for _, fileName := range allArgs {
+		lineCount, wordCount, charCount = 0, 0, 0
 		f, err := os.Open(fileName)
 		if err != nil {
 			erroredExit(err)
 		}
 		defer f.Close()
 
-		bytes := make([]byte, 1024)
+		bytes := make([]byte, 64)
+		wordEnd = 0
+
 		for {
 			n, err := f.Read(bytes)
 			if err == io.EOF {
@@ -36,13 +39,22 @@ func main() {
 			content := string(bytes[:n])
 
 			lineCount += strings.Count(content, "\n")
+			wordCount += len(strings.Fields(content)) - int(wordEnd)
 			charCount += len(content)
-			wordCount += len(strings.Split(content, " ")) + lineCount
+
+			if strings.HasSuffix(content, " ") || strings.HasSuffix(content, "\n") {
+				wordEnd = 0
+			} else {
+				wordEnd = 1
+			}
+
+			fmt.Printf("\nFields are: %q", strings.Fields(content))
+			fmt.Printf("\nWordEnd: %d", wordEnd)
+			fmt.Printf("\nWordCount: %d", wordCount)
+			fmt.Printf("\nLineCount: %d\n", lineCount)
 		}
 
-		output = fileName
-
-		fmt.Println(output)
+		fmt.Println(lineCount, wordCount, charCount, fileName)
 	}
 }
 
