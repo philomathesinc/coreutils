@@ -2,7 +2,8 @@
 
 ## Scope
 
-Iteratively working on the following.
+- Iteratively work on the following.
+- Mark each point done after adding test cases.
 
 ### Inputs
 - [ ] Implement fields flag with delimiter - `--fields=LIST --delimiter=DELIM`
