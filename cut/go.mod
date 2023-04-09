@@ -1,3 +1,3 @@
-module github.com/philomathesinc/coreutils/cut/mbtamuli
+module github.com/philomathesinc/coreutils/cut
 
 go 1.20
