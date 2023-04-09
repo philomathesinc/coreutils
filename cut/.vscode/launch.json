@@ -9,7 +9,8 @@
             "program": "${fileDirname}",
             "args": [
                 "--fields=1",
-            ]
+                "testdata/lists.txt"
+            ],
         },
         {
             "name": "02 - Colon;Fields=1",
@@ -19,7 +20,8 @@
             "program": "${fileDirname}",
             "args": [
                 "--fields=1",
-                "--delimiter=\":\""
+                "--delimiter=\":\"",
+                "testdata/lists.txt",
             ]
         },
         {
@@ -30,7 +32,8 @@
             "program": "${fileDirname}",
             "args": [
                 "--fields=1-3",
-                "--delimiter=\":\""
+                "--delimiter=\":\"",
+                "testdata/lists.txt",
             ]
         },
         {
