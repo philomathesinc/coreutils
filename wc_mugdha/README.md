@@ -11,5 +11,8 @@ Went over [this webpage](https://www.golinuxcloud.com/golang-read-a-file-methods
     - We have no control over what the length of a line is.
     - The webpage says it's performance is good even with large files.
 
-#### Issues faced with `os.Open()` option -
+#### Issues faced with `io.Read()` option -
 - While trying to calculate word count for every x bytes, the last word gets cut and counted as two different words.
+
+#### Issues faced with `bufio.NewScanner()` option -
+- `Scanner.Scan()` removes newlines from the buffer before it's available for printing, because by default it splits on lines.
