@@ -1,9 +1,5 @@
 # GNU `cut`
 
-## Scope
-
-- [ ] Experiment with flags and list out scenarios to be implemented
-
 ## References
 1. GNU `cut` Documentation
     - https://www.gnu.org/software/coreutils/manual/html_node/cut-invocation.html
@@ -121,4 +117,19 @@
         or available locally via: info '(coreutils) cut invocation'
 
     GNU coreutils 9.2                                                   March 2023                                                              CUT(1)
+    ```
+
+## Development
+
+If using VSCode, you can go to the Run and Debug screen to Debug the code in various ways.
+
+1. Using the VSCode window to launch the program using different args - Check the [`.vscode/launch.json`](./.vscode/launch.json) to check the different configurations. For example - "Colon;Fields=1", "Tab;Fields=1", etc.
+
+2. Using a separate terminal to launch the binary and debugging in the VSCode window. For this to work, you have to build the binary and then execute using these commands.
+    ```
+    go build -gcflags=all="-N -l" .
+
+    # Assuming your binary is called `cut`
+    # Pass any flags you want to your program after the `--`(double hyphen)
+    dlv exec --api-version 2 --headless -l 127.0.0.1:2345 ./cut -- -f 1 testdata/lists.txt
     ```
