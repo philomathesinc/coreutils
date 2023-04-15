@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"strings"
 )
@@ -41,10 +42,27 @@ func main() {
 		return
 	}
 
-	if flag.NArg() == 0 {
-		os.Exit(1)
-	}
 	filename := flag.Arg(0)
+	if filename == "" || filename == "-" {
+		tempFile, err := os.CreateTemp(".", "stdin-*")
+		if err != nil {
+			log.Fatalf("error creating temp file : %v", err)
+		}
+
+		file, err := os.Open("/dev/stdin")
+		if err != nil {
+			log.Fatalf("error opening stdin file : %v", err)
+		}
+
+		_, err = io.Copy(tempFile, file)
+		if err != nil {
+			log.Fatalf("error opening stdin file : %v", err)
+		}
+
+		tempFile.Close()
+		file.Close()
+		filename = tempFile.Name()
+	}
 
 	outputFormat := ""
 	for i := 0; i < flag.NFlag(); i++ {
