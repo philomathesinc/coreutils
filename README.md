@@ -1,1 +1,3 @@
 # coreutils
+
+- [`wc`](./wc)
