@@ -39,3 +39,32 @@ Summary
   'wc single.txt' ran
     2.90 ± 0.41 times faster than './wc single.txt'
 ```
+pkg/wc/
+wc struct {
+  lines bool
+  characters bool
+  words bool
+  in io.Reader
+}
+
+func Count() {
+
+}
+
+result struct {
+  lineCount int
+  charCount int
+  wordCount int
+  filename string
+}
+
+Exported func to set above flags
+
+
+pkg/cmd/main.go
+wcObj := &wc{linesFlag, charFlag, wordsFlag, fileNames}
+wcObj.Count()
+
+
+// chan approach
+go wcObj.Count(chan)
