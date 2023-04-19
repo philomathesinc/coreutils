@@ -33,7 +33,7 @@ If using VSCode, you can go to the Run and Debug screen to Debug the code in var
     - 
 2. Usage info via `cat --help`
     ```
-    Usage: gcat [OPTION]... [FILE]...
+    Usage: cat [OPTION]... [FILE]...
     Concatenate FILE(s) to standard output.
 
     With no FILE, or when FILE is -, read standard input.
@@ -60,7 +60,4 @@ If using VSCode, you can go to the Run and Debug screen to Debug the code in var
     Full documentation <https://www.gnu.org/software/coreutils/cat>
     or available locally via: info '(coreutils) cat invocation'
     
-    ```
-3. Man Page of GNU `cat`
-    ```
     ```
