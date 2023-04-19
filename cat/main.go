@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	fmt.Println("cat")
+	flag.Parse()
 	output := Cat(flag.Args())
 	fmt.Println(output)
 }
