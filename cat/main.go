@@ -19,14 +19,18 @@ func Cat(filenames []string) string {
 	for _, filename := range filenames {
 		file, err := os.Open(filename)
 		if err != nil {
-			log.Fatal("failed to open file:", err)
+			log.Fatal(err)
 		}
-		data, err := io.ReadAll(file)
-		if err != nil {
-			log.Fatal("failed to read file:", err)
-		}
-		file.Close()
+		data := readData(file)
 		outputdata = append(outputdata, data...)
 	}
 	return string(append(outputdata, '%'))
+}
+
+func readData(r io.Reader) []byte {
+	data, err := io.ReadAll(r)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return data
 }
