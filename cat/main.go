@@ -14,7 +14,8 @@ func main() {
 	fmt.Println(output)
 }
 
-func Cat(filenames []string) (output string) {
+func Cat(filenames []string) string {
+	var outputdata []byte
 	for _, filename := range filenames {
 		file, err := os.Open(filename)
 		if err != nil {
@@ -25,7 +26,7 @@ func Cat(filenames []string) (output string) {
 			log.Fatal("failed to read file:", err)
 		}
 		file.Close()
-		output += string(data)
+		outputdata = append(outputdata, data...)
 	}
-	return output
+	return string(append(outputdata, '%'))
 }
