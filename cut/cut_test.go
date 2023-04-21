@@ -7,7 +7,13 @@ import (
 )
 
 func TestFields(t *testing.T) {
-	t.Run("No delimiter", func(t *testing.T) {
+	t.Run("No delimiter", noDelimiters(t))
+}
+
+func noDelimiters(t *testing.T) func(t *testing.T) {
+	t.Helper()
+
+	return func(t *testing.T) {
 		type args struct {
 			input  string
 			fields string
@@ -22,35 +28,25 @@ func TestFields(t *testing.T) {
 			{
 				"letters",
 				args{
-					`a	b
-aa	bb	cc
-aaa	bbb	ccc	ddd`,
+					"a	b\naa	bb	cc\naaa	bbb	ccc	ddd",
 					"2",
 				},
-				`b
-bb
-bbb`,
+				"b\nbb\nbbb",
 				false,
 			},
 			{
 				"numbers",
 				args{
-					`1	2
-11	22	33
-111	222	333	444`,
+					"1	2\n11	22	33\n111	222	333	444",
 					"2",
 				},
-				`2
-22
-222`,
+				"2\n22\n222",
 				false,
 			},
 			{
 				"unacceptable fields",
 				args{
-					`1	2
- 11	22	33
- 111	222	333	444`,
+					"1	2\n11	22	33\n111	222	333	444",
 					"a",
 				},
 				"",
@@ -70,5 +66,5 @@ bbb`,
 				}
 			})
 		}
-	})
+	}
 }
