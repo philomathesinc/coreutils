@@ -1,13 +1,17 @@
 package cut
 
 import (
+	"errors"
 	"strconv"
 	"strings"
 )
 
-func Fields(input string, fields string) string {
+func Fields(input string, fields string) (string, error) {
 	var output []string
-	fieldNum, _ := strconv.Atoi(fields)
+	fieldNum, err := strconv.Atoi(fields)
+	if err != nil {
+		return "", errors.New("invalid field value")
+	}
 	fieldIndex := fieldNum - 1
 	lines := strings.Split(input, "\n")
 	for _, line := range lines {
@@ -15,5 +19,5 @@ func Fields(input string, fields string) string {
 		output = append(output, lFields[fieldIndex])
 	}
 
-	return strings.Join(output, "\n")
+	return strings.Join(output, "\n"), nil
 }
