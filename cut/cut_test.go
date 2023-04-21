@@ -61,6 +61,15 @@ func noDelimiters(t *testing.T) func(t *testing.T) {
 				"33\n333",
 				false,
 			},
+			{
+				"no newline in input",
+				args{
+					"1	2",
+					"2",
+				},
+				"2",
+				false,
+			},
 		}
 
 		for _, tt := range fieldsTests {
