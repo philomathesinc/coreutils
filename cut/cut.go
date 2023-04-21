@@ -12,10 +12,13 @@ func Fields(input string, fields string) (string, error) {
 	if err != nil {
 		return "", errors.New("invalid field value")
 	}
-	fieldIndex := fieldNum - 1
 	lines := strings.Split(input, "\n")
 	for _, line := range lines {
 		lFields := strings.Fields(line)
+		if fieldNum > len(lFields) {
+			continue
+		}
+		fieldIndex := fieldNum - 1
 		output = append(output, lFields[fieldIndex])
 	}
 
