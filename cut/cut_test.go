@@ -52,6 +52,15 @@ func noDelimiters(t *testing.T) func(t *testing.T) {
 				"",
 				true,
 			},
+			{
+				"field not present in all lines",
+				args{
+					"1	2\n11	22	33\n111	222	333	444",
+					"3",
+				},
+				"33\n333",
+				false,
+			},
 		}
 
 		for _, tt := range fieldsTests {
