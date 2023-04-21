@@ -9,10 +9,24 @@ import (
 // Fields returns the requested field from the input, iterating over each line
 func Fields(input string, fields string) (string, error) {
 	// Variable to store output
-	var output []string
+	var (
+		startStr, endStr string
+		output           []string
+	)
 
 	// Convert fields to int
-	fieldNum, err := strconv.Atoi(fields)
+	requestedFieldParts := strings.Split(fields, "-")
+	startStr = requestedFieldParts[0]
+	endStr = startStr
+	if len(requestedFieldParts) == 2 {
+		endStr = requestedFieldParts[1]
+	}
+
+	start, err := strconv.Atoi(startStr)
+	if err != nil {
+		return "", errors.New("invalid field value")
+	}
+	end, err := strconv.Atoi(endStr)
 	if err != nil {
 		return "", errors.New("invalid field value")
 	}
@@ -27,15 +41,21 @@ func Fields(input string, fields string) (string, error) {
 		lFields := strings.Fields(line)
 
 		// Check if requested field is greater than the number of fields in the line
-		if fieldNum > len(lFields) {
+		if end > len(lFields) {
 			continue
 		}
 
 		// Count of cut starts from 1, so we need to subtract 1 from given field
-		fieldIndex := fieldNum - 1
+		startIndex := start - 1
+		endIndex := end
 
 		// Append field to output
-		output = append(output, lFields[fieldIndex])
+		if startIndex == endIndex {
+			output = append(output, lFields[startIndex])
+			continue
+		}
+
+		output = append(output, strings.Join(lFields[startIndex:endIndex], "\t"))
 	}
 
 	// Join output with new line and return
