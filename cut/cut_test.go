@@ -16,9 +16,9 @@ func TestFields(t *testing.T) {
 		}{
 			{
 				"letters",
-				`a:b
-aa:bb:cc
-aaa:bbb:ccc:ddd`,
+				`a	b
+aa	bb	cc
+aaa	bbb	ccc	ddd`,
 				"2",
 				`b
 bb
@@ -26,9 +26,9 @@ bbb`,
 			},
 			{
 				"numbers",
-				`1:2
-11:22:33
-111:222:333:444`,
+				`1	2
+11	22	33
+111	222	333	444`,
 				"2",
 				`2
 22
