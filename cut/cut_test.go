@@ -22,6 +22,15 @@ aaa:bbb:ccc:ddd`,
 bb
 bbb`,
 			},
+			{
+				`1:2
+11:22:33
+111:222:333:444`,
+				"2",
+				`2
+22
+222`,
+			},
 		}
 
 		for _, tt := range fieldsTests {
