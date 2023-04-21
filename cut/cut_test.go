@@ -8,15 +8,29 @@ import (
 
 func TestFields(t *testing.T) {
 	t.Run("No delimiter", func(t *testing.T) {
-		got := cut.Fields(`a:b
+		fieldsTests := []struct {
+			input  string
+			fields string
+			want   string
+		}{
+			{
+				`a:b
 aa:bb:cc
-aaa:bbb:ccc:ddd`, "2")
-		want := `b
+aaa:bbb:ccc:ddd`,
+				"2",
+				`b
 bb
-bbb`
+bbb`,
+			},
+		}
 
-		if got != want {
-			t.Errorf("got %q want %q", got, want)
+		for _, tt := range fieldsTests {
+			got := cut.Fields(tt.input, tt.fields)
+			want := tt.want
+
+			if got != want {
+				t.Errorf("got %q want %q", got, want)
+			}
 		}
 	})
 }
