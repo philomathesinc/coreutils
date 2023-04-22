@@ -7,7 +7,12 @@ import (
 )
 
 // Fields returns the requested field from the input, iterating over each line
-func Fields(input string, fields string) (string, error) {
+func Fields(input, fields, delimiter string) (string, error) {
+	// Delimiter is tab by default
+	if delimiter == "" {
+		delimiter = "\t"
+	}
+
 	// Variable to store output
 	var (
 		startStr, endStr string
@@ -57,7 +62,9 @@ func Fields(input string, fields string) (string, error) {
 	for _, line := range lines {
 
 		// Split line into fields
-		lFields := strings.Fields(line)
+		lFields := strings.FieldsFunc(line, func(r rune) bool {
+			return string(r) == delimiter
+		})
 
 		// Count of cut starts from 1, so we need to subtract 1 from given field
 		startIndex := start - 1
@@ -79,7 +86,7 @@ func Fields(input string, fields string) (string, error) {
 			endIndex = len(lFields)
 		}
 
-		output = append(output, strings.Join(lFields[startIndex:endIndex], "\t"))
+		output = append(output, strings.Join(lFields[startIndex:endIndex], delimiter))
 	}
 
 	// Join output with new line and return
