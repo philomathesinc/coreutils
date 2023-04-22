@@ -204,6 +204,16 @@ func delimiterSpecified(t *testing.T) func(t *testing.T) {
 				"a:b\naa:bb\naaa:bbb",
 				false,
 			},
+			{
+				"mixed delimiters in input",
+				args{
+					"a	b\naa	bb	cc\naaa:bbb:ccc:ddd",
+					"1-2",
+					":",
+				},
+				"a:b\naa:bb\naaa:bbb",
+				false,
+			},
 		}
 
 		for _, tt := range fieldsTests {
