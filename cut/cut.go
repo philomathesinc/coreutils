@@ -31,6 +31,10 @@ func Fields(input string, fields string) (string, error) {
 		return "", errors.New("invalid field value")
 	}
 
+	if start < 1 || end < 1 {
+		return "", errors.New("fields are numbered from 1")
+	}
+
 	// Split input into lines
 	lines := strings.Split(input, "\n")
 
@@ -48,12 +52,6 @@ func Fields(input string, fields string) (string, error) {
 		// Count of cut starts from 1, so we need to subtract 1 from given field
 		startIndex := start - 1
 		endIndex := end
-
-		// Append field to output
-		if startIndex == endIndex {
-			output = append(output, lFields[startIndex])
-			continue
-		}
 
 		output = append(output, strings.Join(lFields[startIndex:endIndex], "\t"))
 	}
