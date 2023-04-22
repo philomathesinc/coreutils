@@ -12,8 +12,8 @@ jobs:
           go-version-file: cut/go.mod
           cache-dependency-path: cut/go.sum
       - name: Run coverage
-        run:
-          cd cut
+        run: |
+          cd cut && \
           go test -v -race -coverprofile=coverage.txt -covermode=atomic
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
