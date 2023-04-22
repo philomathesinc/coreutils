@@ -9,8 +9,9 @@ import (
 
 func TestFields(t *testing.T) {
 	t.Run("No delimiter", noDelimiters(t))
-	t.Run("Various ranges", variousRanges(t))
+	t.Run("Types of ranges", typesOfRanges(t))
 	t.Run("Delimiter specified", delimiterSpecified(t))
+	// t.Run("Multiple ranges", multipleRanges(t))
 }
 
 func noDelimiters(t *testing.T) func(t *testing.T) {
@@ -91,7 +92,7 @@ func noDelimiters(t *testing.T) func(t *testing.T) {
 	}
 }
 
-func variousRanges(t *testing.T) func(t *testing.T) {
+func typesOfRanges(t *testing.T) func(t *testing.T) {
 	t.Helper()
 
 	return func(t *testing.T) {
