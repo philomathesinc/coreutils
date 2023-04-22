@@ -49,9 +49,9 @@ func noDelimiters(t *testing.T) func(t *testing.T) {
 				"field not present",
 				args{
 					"a	b\naa	bb	cc\naaa	bbb	ccc	ddd",
-					"3-3",
+					"5",
 				},
-				"cc\nccc",
+				"\n\n",
 				false,
 			},
 			{
@@ -82,7 +82,7 @@ func noDelimiters(t *testing.T) func(t *testing.T) {
 					return
 				}
 				if got != tt.want {
-					t.Errorf("Fields() = %v, want %v", got, tt.want)
+					t.Errorf("Fields() mismatch (-want +got):\n%s", cmp.Diff(tt.want, got))
 				}
 			})
 		}
@@ -112,6 +112,15 @@ func variousRanges(t *testing.T) func(t *testing.T) {
 				},
 				"a	b\naa	bb\naaa	bbb",
 				false,
+			},
+			{
+				"invalid range with no endpoint",
+				args{
+					"a	b\naa	bb	cc\naaa	bbb	ccc	ddd",
+					"-",
+				},
+				"",
+				true,
 			},
 			{
 				"start incorrect for range",
