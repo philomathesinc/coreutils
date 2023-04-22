@@ -60,6 +60,11 @@ func Fields(input, fields, delimiter string) (string, error) {
 
 	// Iterate over lines
 	for _, line := range lines {
+		// If line doesn't contain delimiter, add it to output without any changes
+		if !strings.ContainsAny(line, delimiter) {
+			output = append(output, line)
+			continue
+		}
 
 		// Split line into fields
 		lFields := strings.FieldsFunc(line, func(r rune) bool {
