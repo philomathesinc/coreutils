@@ -3,6 +3,7 @@ package cut_test
 import (
 	"testing"
 
+	"github.com/google/go-cmp/cmp"
 	"github.com/philomathesinc/coreutils/cut"
 )
 
@@ -59,7 +60,7 @@ func noDelimiters(t *testing.T) func(t *testing.T) {
 					"a	b\naa	bb	cc\naaa	bbb	ccc	ddd",
 					"3",
 				},
-				"cc\nccc",
+				"\ncc\nccc",
 				false,
 			},
 			{
@@ -130,6 +131,24 @@ func variousRanges(t *testing.T) func(t *testing.T) {
 				"",
 				true,
 			},
+			{
+				"start only range",
+				args{
+					"a	b\naa	bb	cc\naaa	bbb	ccc	ddd",
+					"3-",
+				},
+				"\ncc\nccc	ddd",
+				false,
+			},
+			{
+				"end only range",
+				args{
+					"a	b\naa	bb	cc\naaa	bbb	ccc	ddd",
+					"-2",
+				},
+				"a	b\naa	bb\naaa	bbb",
+				false,
+			},
 		}
 
 		for _, tt := range fieldsTests {
@@ -140,7 +159,7 @@ func variousRanges(t *testing.T) func(t *testing.T) {
 					return
 				}
 				if got != tt.want {
-					t.Errorf("Fields() = %v, want %v", got, tt.want)
+					t.Errorf("Fields() mismatch (-want +got):\n%s", cmp.Diff(tt.want, got))
 				}
 			})
 		}
