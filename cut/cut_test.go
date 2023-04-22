@@ -77,13 +77,14 @@ func noDelimiters(t *testing.T) func(t *testing.T) {
 
 		for _, tt := range fieldsTests {
 			t.Run(tt.name, func(t *testing.T) {
-				got, err := cut.Fields(tt.args.input, tt.args.fields)
+				got, err := cut.Fields(tt.args.input, tt.args.fields, "")
 				if (err != nil) != tt.wantErr {
 					t.Errorf("Fields() error = %v, wantErr %v", err, tt.wantErr)
 					return
 				}
-				if got != tt.want {
-					t.Errorf("Fields() mismatch (-want +got):\n%s", cmp.Diff(tt.want, got))
+				diff := cmp.Diff(tt.want, got)
+				if diff != "" {
+					t.Errorf("Fields() mismatch (-want +got):\n%+v", diff)
 				}
 			})
 		}
@@ -163,13 +164,14 @@ func variousRanges(t *testing.T) func(t *testing.T) {
 
 		for _, tt := range fieldsTests {
 			t.Run(tt.name, func(t *testing.T) {
-				got, err := cut.Fields(tt.args.input, tt.args.fields)
+				got, err := cut.Fields(tt.args.input, tt.args.fields, "")
 				if (err != nil) != tt.wantErr {
 					t.Errorf("Fields() error = %v, wantErr %v", err, tt.wantErr)
 					return
 				}
-				if got != tt.want {
-					t.Errorf("Fields() mismatch (-want +got):\n%s", cmp.Diff(tt.want, got))
+				diff := cmp.Diff(tt.want, got)
+				if diff != "" {
+					t.Errorf("Fields() mismatch (-want +got):\n%+v", diff)
 				}
 			})
 		}
@@ -211,8 +213,9 @@ func delimiterSpecified(t *testing.T) func(t *testing.T) {
 					t.Errorf("Fields() error = %v, wantErr %v", err, tt.wantErr)
 					return
 				}
-				if got != tt.want {
-					t.Errorf("Fields() mismatch (-want +got):\n%s", cmp.Diff(tt.want, got))
+				diff := cmp.Diff(tt.want, got)
+				if diff != "" {
+					t.Errorf("Fields() mismatch (-want +got):\n%+v", diff)
 				}
 			})
 		}
