@@ -10,6 +10,7 @@ import (
 func TestFields(t *testing.T) {
 	t.Run("No delimiter", noDelimiters(t))
 	t.Run("Various ranges", variousRanges(t))
+	t.Run("Delimiter specified", delimiterSpecified(t))
 }
 
 func noDelimiters(t *testing.T) func(t *testing.T) {
@@ -163,6 +164,49 @@ func variousRanges(t *testing.T) func(t *testing.T) {
 		for _, tt := range fieldsTests {
 			t.Run(tt.name, func(t *testing.T) {
 				got, err := cut.Fields(tt.args.input, tt.args.fields)
+				if (err != nil) != tt.wantErr {
+					t.Errorf("Fields() error = %v, wantErr %v", err, tt.wantErr)
+					return
+				}
+				if got != tt.want {
+					t.Errorf("Fields() mismatch (-want +got):\n%s", cmp.Diff(tt.want, got))
+				}
+			})
+		}
+	}
+}
+
+func delimiterSpecified(t *testing.T) func(t *testing.T) {
+	t.Helper()
+
+	return func(t *testing.T) {
+		type args struct {
+			input     string
+			fields    string
+			delimiter string
+		}
+
+		fieldsTests := []struct {
+			name    string
+			args    args
+			want    string
+			wantErr bool
+		}{
+			{
+				"happy path",
+				args{
+					"a:b\naa:bb:cc\naaa:bbb:ccc:ddd",
+					"1-2",
+					":",
+				},
+				"a:b\naa:bb\naaa:bbb",
+				false,
+			},
+		}
+
+		for _, tt := range fieldsTests {
+			t.Run(tt.name, func(t *testing.T) {
+				got, err := cut.Fields(tt.args.input, tt.args.fields, tt.args.delimiter)
 				if (err != nil) != tt.wantErr {
 					t.Errorf("Fields() error = %v, wantErr %v", err, tt.wantErr)
 					return
