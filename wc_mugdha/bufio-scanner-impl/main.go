@@ -16,6 +16,7 @@ var (
 
 func main() {
 	var allFiles []string
+	// Parse over all CLI args to remove filenames from them before parsing flags.
 	for i := 1; i < len(os.Args); i++ {
 		if os.Args[i] == "-l" || os.Args[i] == "-w" || os.Args[i] == "-c" {
 			continue
@@ -25,6 +26,7 @@ func main() {
 		i--
 	}
 
+	// Flag parsing.
 	flag.BoolVar(&lineCountFlag, "l", false, "Display the number of lines")
 	flag.BoolVar(&wordCountFlag, "w", false, "Display the number of words")
 	flag.BoolVar(&characterCountFlag, "c", false, "Display the number of characters")
@@ -36,14 +38,17 @@ func main() {
 	cc := make(map[string]string)
 	var tl, tw, tc = "", "", ""
 
+	// Set all flags to true, if none are provided.
 	if !lineCountFlag && !wordCountFlag && !characterCountFlag {
 		lineCountFlag, wordCountFlag, characterCountFlag = true, true, true
 	}
 
+	// Printing total only if there are more than one files.
 	if len(allFiles) > 1 {
 		printTotal = true
 	}
 
+	// Counting lines if flag set.
 	if lineCountFlag {
 		total := 0
 		for _, fileName := range allFiles {
@@ -53,6 +58,8 @@ func main() {
 		}
 		tl = fmt.Sprintf("%s ", strconv.Itoa(total))
 	}
+
+	// Counting words if flag set.
 	if wordCountFlag {
 		total := 0
 		for _, fileName := range allFiles {
@@ -62,6 +69,8 @@ func main() {
 		}
 		tw = fmt.Sprintf("%s ", strconv.Itoa(total))
 	}
+
+	// Counting characters if flag set.
 	if characterCountFlag {
 		total := 0
 		for _, fileName := range allFiles {
@@ -72,10 +81,12 @@ func main() {
 		tc = fmt.Sprintf("%s ", strconv.Itoa(total))
 	}
 
+	// Printing count for provided files.
 	for _, k := range allFiles {
 		fmt.Printf("%*s%*s%*s %s\n", len(tl), lc[k], len(tw), wc[k], len(tc), cc[k], k)
 	}
 
+	// Printing total count.
 	if printTotal {
 		fmt.Printf(" %s%s%s%s", tl, tw, tc, "total\n")
 	}
@@ -149,12 +160,4 @@ func countChars(fn string) int {
 func erroredExit(err error) {
 	fmt.Println(err)
 	os.Exit(1)
-}
-
-func openFile(f string) *os.File {
-	fd, err := os.Open(f)
-	if err != nil {
-		erroredExit(err)
-	}
-	return fd
 }
