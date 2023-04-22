@@ -11,6 +11,7 @@ func Fields(input string, fields string) (string, error) {
 	// Variable to store output
 	var (
 		startStr, endStr string
+		start, end       int
 		output           []string
 	)
 
@@ -22,16 +23,30 @@ func Fields(input string, fields string) (string, error) {
 		endStr = requestedFieldParts[1]
 	}
 
+	if startStr == "" && endStr == "" {
+		return "", errors.New("invalid range with no endpoint")
+	}
+
+	if startStr == "" && endStr != "" {
+		startStr = "1"
+	}
+
 	start, err := strconv.Atoi(startStr)
 	if err != nil {
 		return "", errors.New("invalid field value")
 	}
-	end, err := strconv.Atoi(endStr)
-	if err != nil {
-		return "", errors.New("invalid field value")
+
+	if startStr != "" && endStr == "" {
+		endStr = "inf"
+		end = -1
+	} else {
+		end, err = strconv.Atoi(endStr)
+		if err != nil {
+			return "", errors.New("invalid field value")
+		}
 	}
 
-	if start < 1 || end < 1 {
+	if start < 1 || (end < 1 && end != -1) {
 		return "", errors.New("fields are numbered from 1")
 	}
 
@@ -44,14 +59,25 @@ func Fields(input string, fields string) (string, error) {
 		// Split line into fields
 		lFields := strings.Fields(line)
 
-		// Check if requested field is greater than the number of fields in the line
-		if end > len(lFields) {
-			continue
-		}
-
 		// Count of cut starts from 1, so we need to subtract 1 from given field
 		startIndex := start - 1
 		endIndex := end
+
+		// Check if requested field is greater than the number of fields in the line
+		if startIndex > len(lFields) {
+			output = append(output, "")
+			continue
+		}
+
+		if endIndex > len(lFields) {
+			output = append(output, "")
+			continue
+		}
+
+		// If endIndex is -1, it means we want to cut till the end of the line
+		if endIndex == -1 {
+			endIndex = len(lFields)
+		}
 
 		output = append(output, strings.Join(lFields[startIndex:endIndex], "\t"))
 	}
