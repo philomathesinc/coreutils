@@ -211,7 +211,7 @@ func delimiterSpecified(t *testing.T) func(t *testing.T) {
 					"1-2",
 					":",
 				},
-				"a:b\naa:bb\naaa:bbb",
+				"a	b\naa	bb	cc\naaa:bbb",
 				false,
 			},
 		}
