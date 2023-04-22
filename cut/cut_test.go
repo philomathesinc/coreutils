@@ -27,7 +27,7 @@ func noDelimiters(t *testing.T) func(t *testing.T) {
 			wantErr bool
 		}{
 			{
-				"letters",
+				"happy path",
 				args{
 					"a	b\naa	bb	cc\naaa	bbb	ccc	ddd",
 					"2",
@@ -36,40 +36,40 @@ func noDelimiters(t *testing.T) func(t *testing.T) {
 				false,
 			},
 			{
-				"numbers",
-				args{
-					"1	2\n11	22	33\n111	222	333	444",
-					"2",
-				},
-				"2\n22\n222",
-				false,
-			},
-			{
 				"unacceptable fields",
 				args{
-					"1	2\n11	22	33\n111	222	333	444",
+					"a	b\naa	bb	cc\naaa	bbb	ccc	ddd",
 					"a",
 				},
 				"",
 				true,
 			},
 			{
-				"field not present in all lines",
+				"field not present",
 				args{
-					"1	2\n11	22	33\n111	222	333	444",
-					"3",
+					"a	b\naa	bb	cc\naaa	bbb	ccc	ddd",
+					"3-3",
 				},
-				"33\n333",
+				"cc\nccc",
 				false,
 			},
 			{
-				"no newline in input",
+				"field not present in all lines",
 				args{
-					"1	2",
-					"2",
+					"a	b\naa	bb	cc\naaa	bbb	ccc	ddd",
+					"3",
 				},
-				"2",
+				"cc\nccc",
 				false,
+			},
+			{
+				"field less than 1",
+				args{
+					"a	b\naa	bb	cc\naaa	bbb	ccc	ddd",
+					"0",
+				},
+				"",
+				true,
 			},
 		}
 
@@ -104,13 +104,31 @@ func variousRanges(t *testing.T) func(t *testing.T) {
 			wantErr bool
 		}{
 			{
-				"letters",
+				"happy path",
 				args{
 					"a	b\naa	bb	cc\naaa	bbb	ccc	ddd",
 					"1-2",
 				},
 				"a	b\naa	bb\naaa	bbb",
 				false,
+			},
+			{
+				"start incorrect for range",
+				args{
+					"a	b\naa	bb	cc\naaa	bbb	ccc	ddd",
+					"a-3",
+				},
+				"",
+				true,
+			},
+			{
+				"end incorrect for range",
+				args{
+					"a	b\naa	bb	cc\naaa	bbb	ccc	ddd",
+					"1-a",
+				},
+				"",
+				true,
 			},
 		}
 
