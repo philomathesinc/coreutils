@@ -13,3 +13,14 @@ Went over [this webpage](https://www.golinuxcloud.com/golang-read-a-file-methods
 
 #### Issues faced with `os.Open()` option -
 - While trying to calculate word count for every x bytes, the last word gets cut and counted as two different words.
+
+## Supported functionaly
+* Using `file.Read()` for reading file contents in a fixed size buffer.
+* Counting lines, words and characters for each file and printing them.
+
+## Unsupported functionaly
+* No flags supported.
+* Doesn't display total of line, word and character count.
+
+## TODO
+* Fix: Count of words - using wordEnd functionality
