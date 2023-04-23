@@ -1,0 +1,19 @@
+name: Test and coverage
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version-file: wc/wc_tdd/go.mod
+          cache-dependency-path: wc/wc_tdd/go.sum
+      - name: Run coverage
+        run: |
+          cd wc/wc_tdd && \
+          go test -v -race -coverprofile=coverage.txt -covermode=atomic
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
