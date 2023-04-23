@@ -61,9 +61,23 @@ func TestCountWords(t *testing.T) {
 		want int
 	}{
 		{
-			"two new words - happy path",
+			"two words",
 			args{
 				"hello world",
+			},
+			2,
+		},
+		{
+			"no words",
+			args{
+				"",
+			},
+			0,
+		},
+		{
+			"words with newlines",
+			args{
+				"hello \n world",
 			},
 			2,
 		},

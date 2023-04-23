@@ -5,3 +5,7 @@ import "strings"
 func CountLines(input string) int {
 	return strings.Count(input, "\n")
 }
+
+func CountWords(input string) int {
+	return len(strings.Fields(string(input)))
+}
