@@ -3,34 +3,50 @@ package wctdd_test
 import (
 	"testing"
 
+	"github.com/google/go-cmp/cmp"
 	wc "github.com/philomathesinc/coreutils/wc/wc_tdd"
 )
 
 func TestCountLines(t *testing.T) {
-	t.Run("no new lines", func(t *testing.T) {
-		got := wc.CountLines("hello world")
-		want := 0
+	type args struct {
+		lines string
+	}
+	countLinesTests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			"no new lines",
+			args{
+				"hello world",
+			},
+			0,
+		},
+		{
+			"one new line",
+			args{
+				"hello world\n",
+			},
+			1,
+		},
+		{
+			"only new lines",
+			args{
+				"\n\n",
+			},
+			2,
+		},
+	}
 
-		if got != want {
-			t.Errorf("CountLines() got: %+v, want: %+v", got, want)
-		}
-	})
-
-	t.Run("one new line", func(t *testing.T) {
-		got := wc.CountLines("hello world\n")
-		want := 1
-
-		if got != want {
-			t.Errorf("CountLines() got: %+v, want: %+v", got, want)
-		}
-	})
-
-	t.Run("only new lines", func(t *testing.T) {
-		got := wc.CountLines("\n\n")
-		want := 2
-
-		if got != want {
-			t.Errorf("CountLines() got: %+v, want: %+v", got, want)
-		}
-	})
+	for _, tt := range countLinesTests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := wc.CountLines(tt.args.lines)
+			want := tt.want
+			diff := cmp.Diff(got, want)
+			if diff != "" {
+				t.Errorf("CountLines() mismatch (-want +got):\n%+v", diff)
+			}
+		})
+	}
 }
