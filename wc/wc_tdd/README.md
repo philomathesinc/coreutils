@@ -20,6 +20,11 @@
 - [ ] Standard input
 - [ ] Standard input - file is passed as `-` character
 
+## Testing
+```
+go test -v -race -coverprofile=coverage.txt -covermode=atomic && go tool cover -html coverage.txt
+```
+
 ## References
 1. GNU `wc` Documentation
     - https://www.gnu.org/software/coreutils/manual/html_node/wc-invocation.html
