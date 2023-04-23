@@ -1,5 +1,7 @@
 package wctdd
 
+import "strings"
+
 func CountLines(input string) int {
-	return 0
+	return strings.Count(input, "\n")
 }
