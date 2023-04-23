@@ -7,10 +7,21 @@ import (
 )
 
 func TestCountLines(t *testing.T) {
-	got := wc.CountLines("hello world")
-	want := 0
+	t.Run("no new lines", func(t *testing.T) {
+		got := wc.CountLines("hello world")
+		want := 0
 
-	if got != want {
-		t.Errorf("CountLines() got: %+v, want: %+v", got, want)
-	}
+		if got != want {
+			t.Errorf("CountLines() got: %+v, want: %+v", got, want)
+		}
+	})
+
+	t.Run("one new line", func(t *testing.T) {
+		got := wc.CountLines("hello world\n")
+		want := 1
+
+		if got != want {
+			t.Errorf("CountLines() got: %+v, want: %+v", got, want)
+		}
+	})
 }
