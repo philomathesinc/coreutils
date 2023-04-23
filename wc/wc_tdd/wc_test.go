@@ -50,3 +50,33 @@ func TestCountLines(t *testing.T) {
 		})
 	}
 }
+
+func TestCountWords(t *testing.T) {
+	type args struct {
+		words string
+	}
+	countWordsTests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			"two new words - happy path",
+			args{
+				"hello world",
+			},
+			2,
+		},
+	}
+
+	for _, tt := range countWordsTests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := wc.CountWords(tt.args.words)
+			want := tt.want
+			diff := cmp.Diff(got, want)
+			if diff != "" {
+				t.Errorf("CountWords() mismatch (-want +got):\n%+v", diff)
+			}
+		})
+	}
+}

@@ -5,7 +5,7 @@
 - Mark each point done after adding test cases.
 
 ### Outputs
-- [ ] Count of lines - `wc -l testdata/one.txt`
+- [x] Count of lines - `wc -l testdata/one.txt`
 - [ ] Count of words - `wc -w testdata/one.txt`
 - [ ] Count of characters - `wc -c testdata/one.txt`
 - [ ] All flags - `wc -l -w -c testdata/one.txt`
