@@ -94,3 +94,47 @@ func TestCountWords(t *testing.T) {
 		})
 	}
 }
+
+func TestCountCharacters(t *testing.T) {
+	type args struct {
+		characters string
+	}
+	countCharactersTests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			"happy path",
+			args{
+				"hello world",
+			},
+			11,
+		},
+		{
+			"no characters",
+			args{
+				"",
+			},
+			0,
+		},
+		{
+			"characters with newlines",
+			args{
+				"hello \n world",
+			},
+			13,
+		},
+	}
+
+	for _, tt := range countCharactersTests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := wc.CountCharacters(tt.args.characters)
+			want := tt.want
+			diff := cmp.Diff(got, want)
+			if diff != "" {
+				t.Errorf("CountCharacters() mismatch (-want +got):\n%+v", diff)
+			}
+		})
+	}
+}
