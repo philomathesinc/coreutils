@@ -24,4 +24,13 @@ func TestCountLines(t *testing.T) {
 			t.Errorf("CountLines() got: %+v, want: %+v", got, want)
 		}
 	})
+
+	t.Run("only new lines", func(t *testing.T) {
+		got := wc.CountLines("\n\n")
+		want := 2
+
+		if got != want {
+			t.Errorf("CountLines() got: %+v, want: %+v", got, want)
+		}
+	})
 }
