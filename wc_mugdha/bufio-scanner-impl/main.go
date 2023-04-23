@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 )
 
 var (
@@ -15,16 +16,29 @@ var (
 )
 
 func main() {
-	var allFiles []string
+	var allFiles = flag.Args()
 	// Parse over all CLI args to remove filenames from them before parsing flags.
 	for i := 1; i < len(os.Args); i++ {
-		if os.Args[i] == "-l" || os.Args[i] == "-w" || os.Args[i] == "-c" {
+		if strings.HasPrefix(os.Args[i], "-l") || strings.HasPrefix(os.Args[i], "-w") || strings.HasPrefix(os.Args[i], "-c") {
 			continue
 		}
 		allFiles = append(allFiles, os.Args[i])
 		os.Args = append(os.Args[:i], os.Args[i+1:]...)
 		i--
 	}
+
+	// Separating the flags before parsing, if needed.
+	var finalArgs []string
+	for i := 1; i < len(os.Args); i++ {
+		allFlags := strings.Split(os.Args[i], "")
+		for _, v := range allFlags {
+			if strings.EqualFold(v, "-") {
+				continue
+			}
+			finalArgs = append(finalArgs, fmt.Sprintf("-%s", v))
+		}
+	}
+	os.Args = append(os.Args[:1], finalArgs...)
 
 	// Flag parsing.
 	flag.BoolVar(&lineCountFlag, "l", false, "Display the number of lines")

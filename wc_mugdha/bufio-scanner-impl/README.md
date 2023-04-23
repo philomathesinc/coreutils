@@ -5,10 +5,7 @@
 * Counting lines, words and characters for each file and printing them.
 * Printing total of lines, words and character count.
 
-#### Unsupported functionaly
-* Flags cannot be aggregated like `-lwc`.
-
 #### How to run
 ```
-go run main.go -l ../data/first.txt ../data/fourth.txt
+go run main.go ../data/first.txt ../data/fourth.txt -lcw
 ```
