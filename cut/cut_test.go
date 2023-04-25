@@ -11,7 +11,7 @@ func TestFields(t *testing.T) {
 	t.Run("No delimiter", noDelimiters(t))
 	t.Run("Types of ranges", typesOfRanges(t))
 	t.Run("Delimiter specified", delimiterSpecified(t))
-	t.Run("Multiple ranges", multipleRanges(t))
+	t.Run("Mixed delimiter input", mixedInput(t))
 }
 
 func noDelimiters(t *testing.T) func(t *testing.T) {
@@ -161,6 +161,33 @@ func typesOfRanges(t *testing.T) func(t *testing.T) {
 				"a	b\naa	bb\naaa	bbb",
 				false,
 			},
+			{
+				"multiple ranges",
+				args{
+					"a	b	c	d\naa	bb	cc	dd	ee\naaa	bbb	ccc	ddd	eee	fff",
+					"1-2,4-5",
+				},
+				"a	b	d\naa	bb	dd	ee\naaa	bbb	ddd	eee",
+				false,
+			},
+			{
+				"overlapping ranges",
+				args{
+					"a	b	c	d\naa	bb	cc	dd	ee\naaa	bbb	ccc	ddd	eee	fff",
+					"1-,4-",
+				},
+				"a	b	c	d\naa	bb	cc	dd	ee\naaa	bbb	ccc	ddd	eee	fff",
+				false,
+			},
+			{
+				"single field and range",
+				args{
+					"a	b	c	d\naa	bb	cc	dd	ee\naaa	bbb	ccc	ddd	eee	fff",
+					"1,3-4",
+				},
+				"a	c	d\naa	cc	dd\naaa	ccc	ddd",
+				false,
+			},
 		}
 
 		for _, tt := range fieldsTests {
@@ -233,13 +260,14 @@ func delimiterSpecified(t *testing.T) func(t *testing.T) {
 	}
 }
 
-func multipleRanges(t *testing.T) func(t *testing.T) {
+func mixedInput(t *testing.T) func(t *testing.T) {
 	t.Helper()
 
 	return func(t *testing.T) {
 		type args struct {
-			input  string
-			fields string
+			input     string
+			fields    string
+			delimiter string
 		}
 
 		fieldsTests := []struct {
@@ -249,19 +277,30 @@ func multipleRanges(t *testing.T) func(t *testing.T) {
 			wantErr bool
 		}{
 			{
-				"happy path",
+				"no delimiter",
 				args{
-					"a	b	c	d\naa	bb	cc	dd	ee\naaa	bbb	ccc	ddd	eee	fff",
-					"1-2,4-5",
+					"a	b	c	d\naa:bb:cc:dd:ee\naaa	bbb	ccc:ddd:eee:fff",
+					"1,3-4",
+					"",
 				},
-				"a	b	d\naa	bb	dd	ee\naaa	bbb	ddd	eee",
+				"a	c	d\naa:bb:cc:dd:ee\naaa	ccc:ddd:eee:fff",
+				false,
+			},
+			{
+				"delimiter specified",
+				args{
+					"a	b	c	d\naa:bb:cc:dd:ee\naaa	bbb	ccc:ddd:eee:fff",
+					"1,3-4",
+					":",
+				},
+				"a	b	c	d\naa:cc:dd\naaa	bbb	ccc:eee:fff",
 				false,
 			},
 		}
 
 		for _, tt := range fieldsTests {
 			t.Run(tt.name, func(t *testing.T) {
-				got, err := cut.Fields(tt.args.input, tt.args.fields, "")
+				got, err := cut.Fields(tt.args.input, tt.args.fields, tt.args.delimiter)
 				if (err != nil) != tt.wantErr {
 					t.Errorf("Fields() error = %v, wantErr %v", err, tt.wantErr)
 					return
