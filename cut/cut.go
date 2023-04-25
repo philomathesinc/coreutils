@@ -48,10 +48,18 @@ func Fields(input, fields, delimiter string) (string, error) {
 		var (
 			output []string
 		)
+		finished := false
 		for _, r := range fRanges {
+			if finished {
+				break
+			}
 			// Count of cut starts from 1, so we need to subtract 1 from given field
 			startIndex := r.start - 1
 			endIndex := r.end
+
+			if endIndex == MaxInt {
+				finished = true
+			}
 
 			// Check if requested field is greater than the number of fields in the line
 			if startIndex > len(lFields) {
