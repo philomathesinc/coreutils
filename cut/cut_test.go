@@ -251,10 +251,10 @@ func multipleRanges(t *testing.T) func(t *testing.T) {
 			{
 				"happy path",
 				args{
-					"a	b\naa	bb	cc\naaa	bbb	ccc	ddd",
-					"1,3",
+					"a	b	c	d\naa	bb	cc	dd	ee\naaa	bbb	ccc	ddd	eee	fff",
+					"1-2,4-5",
 				},
-				"a\naa	cc\naaa	ccc",
+				"a	b	d\naa	bb	dd	ee\naaa	bbb	ddd	eee",
 				false,
 			},
 		}
